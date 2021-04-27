@@ -67,6 +67,7 @@ UKF::UKF() {
   weights_(0) = lambda_ / (lambda_ + n_aug_);
   for (i = 1; i < 2 * n_aug_ + 1; i++) weights_(i) = 1 / (lambda_ + n_aug_) / 2;
 
+  is_initialized_ = false;
 }
 
 UKF::~UKF() {}
@@ -84,6 +85,8 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 		{
 			x_(0) = meas_package.raw_measurements_(0);
 			x_(1) = meas_package.raw_measurements_(1);
+			P_(0, 0) = std_laspx_ * std_laspx_;
+			P_(1, 1) = std_laspy_ * std_laspy_;
 		}
 		else
 		{
